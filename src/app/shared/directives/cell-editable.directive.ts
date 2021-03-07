@@ -44,6 +44,7 @@ export class CellEditableDirective {
 
   /**
    * Creates input to edit the cell.
+   *
    * @private
    */
   private createInput(): void {
@@ -61,6 +62,7 @@ export class CellEditableDirective {
 
   /**
    * Creates save button.
+   *
    * @private
    */
   private createSaveButton(): void {
@@ -75,6 +77,7 @@ export class CellEditableDirective {
 
   /**
    * Creates cancel button.
+   *
    * @private
    */
   private createCancelButton(): void {
@@ -88,11 +91,12 @@ export class CellEditableDirective {
 
   /**
    * Set's standard styles to button.
+   *
    * @param button
    * @param data
    * @private
    */
-  private setButtonStyles(button: any, data: { icon: string, color?: string, }): void {
+  private setButtonStyles(button: any, data: { icon: string; color?: string }): void {
     this.renderer.setProperty(button, 'innerText', data.icon);
     this.renderer.setStyle(button, 'margin-right', '5px');
     this.renderer.setStyle(button, 'cursor', 'pointer');
@@ -106,6 +110,7 @@ export class CellEditableDirective {
 
   /**
    * Removes input and buttons and updates the value of the cell.
+   *
    * @private
    */
   private clearDiv(): void {

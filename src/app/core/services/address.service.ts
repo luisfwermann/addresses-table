@@ -6,7 +6,7 @@ import {AddressModel} from '../models/address.model';
 
 @Injectable()
 export class AddressService {
-  BASE_URL = 'https://0f1c6e64.s3.amazonaws.com/addresses.txt';
+  static baseUrl = 'https://0f1c6e64.s3.amazonaws.com/addresses.txt';
 
   constructor(private http: HttpClient) {}
 
@@ -14,7 +14,7 @@ export class AddressService {
    * Get's all addresses from the file.
    */
   getAddresses(): Observable<AddressModel[]> {
-    return this.http.get(this.BASE_URL, { responseType: 'text' }).pipe(
+    return this.http.get(AddressService.baseUrl, { responseType: 'text' }).pipe(
       map(txt => {
         const pattern = /(^\d*)\s(.+?),\s(.+?),\s(.{2})\s(\d*)/gm;
         const formatted = [];
@@ -40,6 +40,7 @@ export class AddressService {
 
   /**
    * Creates an observable to save the data.
+   *
    * @param data Addresses to save
    */
   saveAddresses(data: AddressModel[]): Observable<any> {
@@ -59,7 +60,7 @@ export class AddressService {
       return rowTxt;
     }).join('\n');
 
-    return this.http.post(this.BASE_URL, txt);
+    return this.http.post(AddressService.baseUrl, txt);
   }
 
 }

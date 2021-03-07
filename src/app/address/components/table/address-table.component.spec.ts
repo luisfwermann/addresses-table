@@ -35,7 +35,7 @@ describe('AddressTableComponent', () => {
     spyOn(addressService, 'getAddresses').and.returnValue(of(ADDRESSES));
   });
 
-  const expectRowCells = (data: { htmlRow: any, expectedValues: any }): void => {
+  const expectRowCells = (data: { htmlRow: any; expectedValues: any }): void => {
     expect(data.htmlRow.cells[0].innerText).toBe(data.expectedValues.streetNumber);
     expect(data.htmlRow.cells[1].innerText).toBe(data.expectedValues.street);
     expect(data.htmlRow.cells[2].innerText).toBe(data.expectedValues.city);
@@ -132,7 +132,7 @@ describe('AddressTableComponent', () => {
     expectSortBy('state');
   }));
 
-  const expectEditRow = (data: { index: number; event: 'keyup' | 'click', isCancel?: boolean }) => {
+  const expectEditRow = (data: { index: number; event: 'keyup' | 'click'; isCancel?: boolean }) => {
     // Test every column
     const mock = { } as any;
     const address = ADDRESSES[data.index] as any;

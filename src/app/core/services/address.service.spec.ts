@@ -38,7 +38,7 @@ describe('AddressService', () => {
       expect(ADDRESSES).toEqual(addresses);
     });
 
-    const req = httpTestingController.expectOne(service.BASE_URL);
+    const req = httpTestingController.expectOne(AddressService.baseUrl);
     expect(req.cancelled).toBeFalsy();
     req.flush(ADDRESSES_STRING);
   });
@@ -48,7 +48,7 @@ describe('AddressService', () => {
       expect(addresses).toEqual(ADDRESSES_STRING);
     });
 
-    const req = httpTestingController.expectOne(service.BASE_URL);
+    const req = httpTestingController.expectOne(AddressService.baseUrl);
 
     expect(req.cancelled).toBeFalsy();
     req.flush(ADDRESSES_STRING);
