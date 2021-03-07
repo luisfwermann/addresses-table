@@ -5,3 +5,42 @@ table {
 mat-toolbar {
   justify-content: space-between;
 }
+
+.spinner {
+  display: grid;
+  place-items: center;
+  height: 70vh;
+}
+
+::ng-deep address-table {
+
+  tr {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: minmax(68px, 0.5fr) 2fr 1fr minmax(50px, 0.5fr) minmax(54px, 0.5fr);
+  }
+
+  tr {
+    td:nth-of-type(1), td:nth-of-type(4) {
+      text-align: right;
+    }
+
+    th:nth-of-type(1), th:nth-of-type(4) {
+      > div {
+        justify-content: flex-end;
+      }
+    }
+
+
+    td:nth-of-type(5), td:nth-of-type(5) {
+      text-align: center;
+    }
+
+    th:nth-of-type(5), th:nth-of-type(5) {
+      > div {
+        justify-content: center;
+      }
+    }
+  }
+
+}

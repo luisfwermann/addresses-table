@@ -16,6 +16,17 @@ export class AddressService {
   getAddresses(): Observable<AddressModel[]> {
     return this.http.get(AddressService.baseUrl, { responseType: 'text' }).pipe(
       map(txt => {
+        /**
+         * Extracts detail about the address from a line like:
+         * 1 Jesse Hill Jr Street, Atlanta, TN 30309
+         *
+         * Results in:
+         * Group 1: 1 (streetNumber)
+         * Group 2: Jesse HIll Jr Street (street)
+         * Group 3: Atlanta (city)
+         * Group 4: TN (state)
+         * Group 5: 30390 (zip)
+         */
         const pattern = /(^\d*)\s(.+?),\s(.+?),\s(.{2})\s(\d*)/gm;
         const formatted = [];
 

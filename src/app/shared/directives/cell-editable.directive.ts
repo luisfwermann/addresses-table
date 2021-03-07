@@ -1,121 +1,44 @@
-import {Directive, ElementRef, HostListener, Input, Renderer2} from '@angular/core';
+import { Directive, ElementRef, HostListener, Input, Renderer2, OnInit } from '@angular/core';
 
 @Directive({
   selector: '[cellEditable]',
 })
-export class CellEditableDirective {
-
+export class CellEditableDirective implements OnInit {
   @Input() element: any;
 
-  div: any;
-  saveButton: any;
-  cancelButton: any;
-  input: any;
+  originalVal = '';
 
   get columnDef(): string {
-    return [...this.el.nativeElement.classList].find((c: string) => c.substr(0, 11) === 'mat-column-').substr(11);
+    return [...this.ref.nativeElement.classList].find((c: string) => c.indexOf('mat-column') === 0).substr(11);
   }
 
-  constructor(private el: ElementRef, private renderer: Renderer2) { }
-
-  /**
-   * Event when clicking the cell.
-   */
-  @HostListener('click') onClick(): void {
-    if (this.el.nativeElement.children.length === 0) {
-      this.createInput();
-      this.createSaveButton();
-      this.createCancelButton();
-
-      this.div = this.renderer.createElement('div');
-      this.renderer.setStyle(this.div, 'display', 'flex');
-
-      // The user can use keys (Esc or Enter) to edit cells, or the buttons (better for mobile)
-      this.renderer.appendChild(this.div, this.cancelButton);
-      this.renderer.appendChild(this.div, this.saveButton);
-      this.renderer.appendChild(this.div, this.input);
-
-      this.renderer.setProperty(this.el.nativeElement, 'innerText', '');
-      this.renderer.appendChild(this.el.nativeElement, this.div);
-
-      this.input.focus();
-    }
+  constructor(private ref: ElementRef, private renderer: Renderer2) {
+    this.renderer.setAttribute(this.ref.nativeElement, 'contenteditable', 'true');
   }
 
   /**
-   * Creates input to edit the cell.
-   *
-   * @private
+   * Event when typing in the cell.
    */
-  private createInput(): void {
-    this.input = this.renderer.createElement('input');
-    this.renderer.setProperty(this.input, 'value', this.element[this.columnDef]);
-    this.renderer.listen(this.input, 'keyup', (evt: KeyboardEvent) => {
-      if (evt.key === 'Enter') {
-        this.element[this.columnDef] = this.input.value;
+   @HostListener('keyup', ['$event']) onKeyUp(evt: KeyboardEvent): void {
+      const el = this.ref.nativeElement;
+      if (evt.key === 'Escape') {
+        this.renderer.setProperty(el, 'textContent', this.originalVal);
       }
       if (evt.key === 'Enter' || evt.key === 'Escape') {
-        this.clearDiv();
+        el.blur();
       }
-    });
   }
 
   /**
-   * Creates save button.
-   *
-   * @private
+   * Event when leaving the cell.
    */
-  private createSaveButton(): void {
-    this.saveButton = this.renderer.createElement('mat-icon');
-    this.setButtonStyles(this.saveButton, { icon: 'save' });
-    this.renderer.listen(this.saveButton, 'click', (evt: MouseEvent) => {
-      this.element[this.columnDef] = this.input.value;
-      this.clearDiv();
-      evt.stopPropagation();
-    });
+   @HostListener('blur') onBlur(): void {
+    this.renderer.setProperty(this.ref.nativeElement, 'textContent', this.ref.nativeElement.textContent.trim());
+    this.element[this.columnDef] = this.ref.nativeElement.textContent.trim();
+    this.originalVal = this.element[this.columnDef];
   }
 
-  /**
-   * Creates cancel button.
-   *
-   * @private
-   */
-  private createCancelButton(): void {
-    this.cancelButton = this.renderer.createElement('mat-icon');
-    this.setButtonStyles(this.cancelButton, { icon: 'cancel', color: 'red' });
-    this.renderer.listen(this.cancelButton, 'click', (evt: MouseEvent) => {
-      this.clearDiv();
-      evt.stopPropagation();
-    });
+  ngOnInit() {
+    this.originalVal = this.element[this.columnDef];
   }
-
-  /**
-   * Set's standard styles to button.
-   *
-   * @param button
-   * @param data
-   * @private
-   */
-  private setButtonStyles(button: any, data: { icon: string; color?: string }): void {
-    this.renderer.setProperty(button, 'innerText', data.icon);
-    this.renderer.setStyle(button, 'margin-right', '5px');
-    this.renderer.setStyle(button, 'cursor', 'pointer');
-    if (data.color) {
-      this.renderer.setStyle(button, 'color', data.color);
-    }
-    this.renderer.addClass(button, 'mat-icon');
-    this.renderer.addClass(button, 'material-icons');
-    this.renderer.addClass(button, 'cell-editable-' + data.icon);
-  }
-
-  /**
-   * Removes input and buttons and updates the value of the cell.
-   *
-   * @private
-   */
-  private clearDiv(): void {
-    this.renderer.removeChild(this.el.nativeElement, this.div);
-    this.renderer.setProperty(this.el.nativeElement, 'innerText', this.element[this.columnDef]);
-  }
-
 }

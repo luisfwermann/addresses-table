@@ -7,13 +7,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; overflow: h
   max-width: 100%;
   border-collapse: collapse;
   margin: 0;
-  display: table;
   overflow-x: auto;
-}
-
-.mat-row,
-.mat-header-row {
-  display: table-row;
 }
 
 .mat-cell,
@@ -26,4 +20,12 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; overflow: h
   white-space: nowrap;
   overflow: hidden;
   vertical-align: middle;
+  text-overflow: ellipsis;
+}
+
+.mat-cell[contenteditable]:focus {
+  text-overflow: clip;
+  overflow-y: unset;
+  white-space: break-spaces;
+  word-break: break-word;
 }

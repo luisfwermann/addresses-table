@@ -54,7 +54,7 @@ describe('AddressTableComponent', () => {
 
       // Test headers
       expectRowCells({ htmlRow: tableRows[0], expectedValues: {
-        street: 'Street', streetNumber: 'Street Number', city: 'City', zip: 'Zip', state: 'State',
+        street: 'Street', streetNumber: 'Number', city: 'City', zip: 'Zip', state: 'State',
       }});
 
       // Test rows
@@ -132,39 +132,41 @@ describe('AddressTableComponent', () => {
     expectSortBy('state');
   }));
 
-  const expectEditRow = (data: { index: number; event: 'keyup' | 'click'; isCancel?: boolean }) => {
+  const expectEditRow = (data: { index: number; event: 'keyup' | 'blur'; isCancel?: boolean }) => {
     // Test every column
     const mock = { } as any;
     const address = ADDRESSES[data.index] as any;
     Object.keys(address).forEach((k) => {
-      const editCell = fixture.nativeElement.querySelectorAll('.mat-cell.mat-column-' + k)[data.index];
+      const editCell: HTMLElement = fixture.nativeElement.querySelectorAll('.mat-cell.mat-column-' + k)[data.index];
       editCell.click();
       fixture.detectChanges();
 
-      const input = editCell.querySelector('input');
-      input.value = address[k] + (data.isCancel ? '' : data.index);
-      mock[k] = input.value;
+      editCell.textContent = address[k] + (data.isCancel ? '' : data.index);
+      mock[k] = editCell.textContent;
       fixture.detectChanges();
 
       if (data.event === 'keyup') {
-        input.dispatchEvent(new KeyboardEvent('keyup', { key: data.isCancel ? 'Escape' : 'Enter' }));
-      } else {
-        editCell.querySelector('.cell-editable-' + (data.isCancel ? 'cancel' : 'save')).click();
+        editCell.dispatchEvent(new KeyboardEvent('keyup', { key: data.isCancel ? 'Escape' : 'Enter' }));
       }
+
+      editCell.dispatchEvent(new Event('blur'));
+
       fixture.detectChanges();
     });
 
-    expectRowCells({ htmlRow: fixture.nativeElement.querySelectorAll('tr')[data.index + 1], expectedValues: mock });
-    expect(comp.dataSource.data[data.index]).toEqual(Object.assign(new AddressModel(), mock));
+    fixture.whenStable().then(() => {
+      expectRowCells({ htmlRow: fixture.nativeElement.querySelectorAll('tr')[data.index + 1], expectedValues: mock });
+      expect(comp.dataSource.data[data.index]).toEqual(Object.assign(new AddressModel(), mock));
+    });
   };
 
   it('should be able to edit cells of row', waitForAsync(() => {
     fixture.detectChanges();
     fixture.whenStable().then(() => {
       fixture.detectChanges();
-      expectEditRow({ index: 0, event: 'click' });
+      expectEditRow({ index: 0, event: 'blur' });
       expectEditRow({ index: 1, event: 'keyup' });
-      expectEditRow({ index: 2, event: 'click' });
+      expectEditRow({ index: 2, event: 'blur' });
     });
   }));
 
@@ -172,9 +174,9 @@ describe('AddressTableComponent', () => {
     fixture.detectChanges();
     fixture.whenStable().then(() => {
       fixture.detectChanges();
-      expectEditRow({ index: 0, event: 'click', isCancel: true });
+      expectEditRow({ index: 0, event: 'blur', isCancel: true });
       expectEditRow({ index: 1, event: 'keyup', isCancel: true });
-      expectEditRow({ index: 2, event: 'click', isCancel: true });
+      expectEditRow({ index: 2, event: 'blur', isCancel: true });
     });
   }));
 });

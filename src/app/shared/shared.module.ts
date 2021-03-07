@@ -11,6 +11,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {HttpClientModule} from '@angular/common/http';
 import {CellEditableDirective} from './directives/cell-editable.directive';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
     MatButtonModule,
     MatIconModule,
     MatProgressBarModule,
+    MatProgressSpinnerModule,
     ScrollingModule,
     TableVirtualScrollModule,
   ],
@@ -39,6 +41,7 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
     MatButtonModule,
     MatIconModule,
     MatProgressBarModule,
+    MatProgressSpinnerModule,
     ScrollingModule,
     TableVirtualScrollModule,
   ]
