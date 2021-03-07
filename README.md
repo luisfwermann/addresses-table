@@ -1,27 +1,14 @@
 # Adresses Table
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.1.
+This project was done as a challenge for one of the companies that I've got interviewed for in the late of 2020. The premise of the challenge is to read a very big text file of list of addresses, show all of the addresses (in a single table) to the user and let it edit the content of the cells and sort all the columns.
 
-## Development server
+Also unitary tests were done for the the components and services of the project (whom are in fact only one for each type).
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+The objective here is to show (at least a little) of my skills with Angular.
 
-## Code scaffolding
+## Commands
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+* `npm run start`: starts dev environment.
+* `npm run build`: builds prod environment.
+* `npm run lint`: lints all files of the project.
+* `npm run test`: runs tests for the project.
